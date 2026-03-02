@@ -1,5 +1,7 @@
 # BiteSpeed Backend
 
+**Live URL:** https://bitespeed-cnh3.onrender.com
+
 A backend service that implements identity reconciliation — linking contacts that share an email address or phone number across multiple records.
 
 ## Tech Stack
@@ -149,6 +151,55 @@ Returns server and timestamp info. Useful for uptime checks.
 ```json
 { "status": "healthy", "timestamp": "2026-03-03T00:00:00.000Z" }
 ```
+
+## Testing the Live API
+
+The API is deployed at: **https://bitespeed-cnh3.onrender.com**
+
+> **Note:** You do NOT need any API key or authentication to test it.
+
+### Using curl (Linux / Mac / Windows Git Bash)
+
+```bash
+# Health check
+curl https://bitespeed-cnh3.onrender.com/health
+
+# Create a new contact
+curl -X POST https://bitespeed-cnh3.onrender.com/identify \
+  -H "Content-Type: application/json" \
+  -d '{"email": "test@example.com", "phoneNumber": "123456"}'
+
+# Link same email with a new phone
+curl -X POST https://bitespeed-cnh3.onrender.com/identify \
+  -H "Content-Type: application/json" \
+  -d '{"email": "test@example.com", "phoneNumber": "999999"}'
+```
+
+### Using PowerShell (Windows)
+
+```powershell
+# Health check
+Invoke-RestMethod https://bitespeed-cnh3.onrender.com/health
+
+# Identify request
+Invoke-RestMethod -Uri https://bitespeed-cnh3.onrender.com/identify `
+  -Method Post -ContentType "application/json" `
+  -Body '{"email": "test@example.com", "phoneNumber": "123456"}'
+```
+
+### Using Postman / Thunder Client
+
+1. Set method to **POST**
+2. URL: `https://bitespeed-cnh3.onrender.com/identify`
+3. Body → raw → JSON:
+```json
+{
+  "email": "test@example.com",
+  "phoneNumber": "123456"
+}
+```
+
+---
 
 ## Deployment on Render
 
