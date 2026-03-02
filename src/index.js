@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const routes = require('./routes/index');
 const { notFoundHandler, errorHandler } = require('./middleware/error');
+const { connectDB } = require('./db/index');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -30,6 +31,10 @@ app.use('/', routes);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Server running in ${NODE_ENV} mode on port ${PORT}`);
+// Connect to DB and start server
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running in ${NODE_ENV} mode on port ${PORT}`);
+  });
 });
+
